@@ -1,0 +1,279 @@
+:root {
+  --bg-0: #050506;
+  --bg-1: #0e0e12;
+  --ink: #f5f5f7;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #2a0d12 0%, transparent 55%),
+    radial-gradient(800px 500px at 50% 110%, #1a0a18 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-0));
+  color: var(--ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  display: flex;
+  justify-content: center;
+  padding: 0 12px 8px;
+}
+
+/* ---- GitHub link ---- */
+.gh-link {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.gh-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+.gh-link svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.app {
+  width: 100%;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+}
+
+/* ---- Stage / Imu ---- */
+.stage {
+  position: relative;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin-top: -28px;
+}
+.imu-wrap {
+  position: relative;
+  width: 22%;
+  height: auto;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.35))
+    drop-shadow(0 24px 24px rgba(0, 0, 0, 0.65));
+  animation: float 2.2s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-36px); }
+}
+.imu-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.stage.battle .imu-wrap { animation: shake 0.1s linear 14; }
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25%      { transform: translate(-4px, 1px) rotate(-0.6deg); }
+  50%      { transform: translate(3px, -2px) rotate(0.4deg); }
+  75%      { transform: translate(-2px, 3px) rotate(-0.3deg); }
+}
+.defeat-label {
+  color: #ff3a3a;
+  font-weight: 900;
+  letter-spacing: 0;
+  font-size: 52px;
+}
+
+/* ---- Result modal ---- */
+.result {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 40%, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.92) 100%);
+  backdrop-filter: blur(6px);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+  text-align: center;
+  gap: 12px;
+  z-index: 3;
+}
+.result.show {
+  display: flex;
+  animation: fadeIn 0.4s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.result h2 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #ff3a3a;
+}
+.result-imu-frame {
+  display: none;
+  width: 360px;
+  max-width: 80vw;
+  aspect-ratio: 360 / 420;
+  overflow: hidden;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 24px rgba(255, 0, 0, 0.35));
+}
+.result-imu-frame.show {
+  display: block;
+  animation: float 2.2s ease-in-out infinite;
+}
+.result-imu {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.07);
+}
+.result.win .result-imu,
+.result.lose .result-imu {
+  object-fit: fill;
+  transform: scale(1.25);
+}
+
+/* ---- Slot row ---- */
+.slots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px;
+}
+.slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  user-select: none;
+  cursor: default;
+}
+.slot .card {
+  position: relative;
+  border-radius: 14px;
+  aspect-ratio: 1 / 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.12s ease;
+}
+.slot .face {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  position: relative;
+}
+.slot .face img,
+.slot .face .txt {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  transition: filter 0.25s ease;
+  filter: saturate(0.35) brightness(0.7);
+}
+.slot .face .txt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #2a2a35, #14141a);
+  color: #f0f0f4;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+.slot.spinning .face img,
+.slot.spinning .face .txt { filter: saturate(0.85) brightness(0.95); }
+.slot.pickable .face img,
+.slot.pickable .face .txt { filter: saturate(0.2) brightness(0.7); }
+.slot.locked .face img,
+.slot.locked .face .txt   { filter: none; }
+.slot.spinning .face { animation: blur 0.16s linear infinite alternate; }
+@keyframes blur {
+  from { filter: blur(0.6px) brightness(1.1); transform: translateY(-1.5px); }
+  to   { filter: blur(1.4px) brightness(0.95); transform: translateY(1.5px); }
+}
+.slot.pickable { cursor: pointer; }
+.slot.pickable:hover  .card { transform: translateY(-3px); }
+.slot.pickable:active .card { transform: translateY(-1px) scale(0.98); }
+.slot.locked .card { animation: lockIn 0.35s ease both; }
+@keyframes lockIn {
+  0%   { transform: scale(1.04); }
+  60%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+.slot .label {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #ffd633;
+  text-align: center;
+}
+
+/* ---- Restart button ---- */
+button.restart-btn {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(180deg, #ff3a4d, #c41030);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  margin-top: 18px;
+  transition:
+    transform 0.2s ease,
+    filter 0.15s ease;
+}
+button.restart-btn svg {
+  width: 52px;
+  height: 52px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+button.restart-btn:hover {
+  filter: brightness(1.08);
+  transform: rotate(-90deg);
+}
+button.restart-btn:active { transform: rotate(-180deg) scale(0.95); }
